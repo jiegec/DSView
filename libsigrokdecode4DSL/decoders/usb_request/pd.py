@@ -253,6 +253,34 @@ class Decoder(srd.Decoder):
         for b in request['data']:
             s += ' %02X' % b
         s += ' ] : %s' % self.handshake
+
+        if request['type'] in ('SETUP IN', 'SETUP OUT'):
+            if request['setup_data'][0] & 0b1000000:
+                s += ' H2D'
+            else:
+                s += ' D2H'
+
+            if request['setup_data'][1] == 0x00:
+                s += ' GET_STATUS'
+            #elif request['setup_data'][1] == 0x01:
+                #s += ' CLEAR_FEATURE'
+            elif request['setup_data'][1] == 0x03:
+                s += ' SET_FEATURE'
+            elif request['setup_data'][1] == 0x05:
+                s += ' SET_ADDRESS'
+            elif request['setup_data'][1] == 0x07:
+                s += ' GET_DESCRIPTOR'
+            elif request['setup_data'][1] == 0x08:
+                s += ' GET_CONFIGURATION'
+            elif request['setup_data'][1] == 0x09:
+                s += ' SET_CONFIGURATION'
+            elif request['setup_data'][1] == 0x0A:
+                s += ' GET_INTERFACE'
+            elif request['setup_data'][1] == 0x11:
+                s += ' SET_INTERFACE'
+            elif request['setup_data'][1] == 0x12:
+                s += ' SYNCH_FRAME'
+
         return s
 
     def handle_request(self, request_start, request_end):

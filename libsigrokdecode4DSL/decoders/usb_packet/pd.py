@@ -261,7 +261,7 @@ class Decoder(srd.Decoder):
         # The SYNC pattern for low-speed/full-speed is KJKJKJKK (00000001).
         if sync != '00000001':
             self.putpb(['SYNC ERROR', sync])
-            self.putb([1, ['SYNC ERROR: %s EXPECTED: 00000001' %(sync, 'SYNC ERR: %s' % sync,
+            self.putb([1, ['SYNC ERROR: %s EXPECTED: 00000001' %sync, 'SYNC ERR: %s' % sync,
                            'SYNC ERR', 'SE', 'S']])
         else:
             self.putpb(['SYNC', sync])
