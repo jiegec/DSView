@@ -262,14 +262,16 @@ class Decoder(srd.Decoder):
 
             if request['setup_data'][1] == 0x00:
                 s += ' GET_STATUS'
-            #elif request['setup_data'][1] == 0x01:
-                #s += ' CLEAR_FEATURE'
+            elif request['setup_data'][1] == 0x01:
+                s += ' CLEAR_FEATURE'
             elif request['setup_data'][1] == 0x03:
                 s += ' SET_FEATURE'
             elif request['setup_data'][1] == 0x05:
                 s += ' SET_ADDRESS'
-            elif request['setup_data'][1] == 0x07:
+            elif request['setup_data'][1] == 0x06:
                 s += ' GET_DESCRIPTOR'
+            elif request['setup_data'][1] == 0x07:
+                s += ' SET_DESCRIPTOR'
             elif request['setup_data'][1] == 0x08:
                 s += ' GET_CONFIGURATION'
             elif request['setup_data'][1] == 0x09:
