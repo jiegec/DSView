@@ -148,7 +148,7 @@ def reverse_number(num, count):
     out = list(count * '0')
     for i in range(0, count):
         if num >> i & 1:
-            out[i] = '1';
+            out[i] = '1'
     return int(''.join(out), 2)
 
 def calc_crc5(bitstr):
@@ -261,7 +261,7 @@ class Decoder(srd.Decoder):
         # The SYNC pattern for low-speed/full-speed is KJKJKJKK (00000001).
         if sync != '00000001':
             self.putpb(['SYNC ERROR', sync])
-            self.putb([1, ['SYNC ERROR: %s' % sync, 'SYNC ERR: %s' % sync,
+            self.putb([1, ['SYNC ERROR: %s EXPECTED: 00000001' %(sync, 'SYNC ERR: %s' % sync,
                            'SYNC ERR', 'SE', 'S']])
         else:
             self.putpb(['SYNC', sync])
@@ -321,7 +321,7 @@ class Decoder(srd.Decoder):
                 self.putb([6, ['CRC5: 0x%02X' % crc5, 'CRC5', 'C']])
             else:
                 self.putpb(['CRC5 ERROR', crc5])
-                self.putb([7, ['CRC5 ERROR: 0x%02X' % crc5, 'CRC5 ERR', 'CE', 'C']])
+                self.putb([7, ['CRC5 ERROR: 0x%02X EXPECTED: 0x%02X' % (crc5, crc5_calc), 'CRC5 ERR', 'CE', 'C']])
             self.packet.append(crc5)
         elif pidname in ('DATA0', 'DATA1', 'DATA2', 'MDATA'):
             # Bits[16:packetlen-16]: Data
@@ -353,7 +353,7 @@ class Decoder(srd.Decoder):
                 self.putb([9, ['CRC16: 0x%04X' % crc16, 'CRC16', 'C']])
             else:
                 self.putpb(['CRC16 ERROR', crc16])
-                self.putb([10, ['CRC16 ERROR: 0x%04X' % crc16, 'CRC16 ERR', 'CE', 'C']])
+                self.putb([10, ['CRC16 ERROR: 0x%04X EXPECTED: 0x%04X' % (crc16, crc16_calc), 'CRC16 ERR', 'CE', 'C']])
             self.packet.append(crc16)
         elif pidname in ('ACK', 'NAK', 'STALL', 'NYET', 'ERR'):
             pass # Nothing to do, these only have SYNC+PID+EOP fields.
